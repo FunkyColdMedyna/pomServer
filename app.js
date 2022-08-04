@@ -11,6 +11,20 @@ const eventRouter = require('./routes/eventRouter');
 const marketRouter = require('./routes/marketRouter');
 const articleRouter = require('./routes/articleRouter');
 
+const mongoose = require('mongoose');
+
+const url = 'mongodb://localhost:27017/projectpommeau';
+const connect = mongoose.connect(url, {
+    useCreateIndex: true,
+    useFindAndModify: false,
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+});
+
+connect.then(() => console.log('Connected correctly to the server'),
+    err => console.log(err)    //alternate promise rejection handling, not using .catch //
+);
+
 var app = express();
 
 // view engine setup

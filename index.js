@@ -1,9 +1,10 @@
 const mongoose = require('mongoose');
 const Producer = require('./models/producer');
 
-const url = 'mongodb://localhost:27017/pommeauserver';
+const url = 'mongodb://localhost:27017/projectpommeau';
 const connect = mongoose.connect(url, {
     useCreateIndex: true,
+    useFindAndModify: false,
     useNewUrlParser: true,
     useUnifiedTopology: true
 });
