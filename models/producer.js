@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const commentSchema = new Schema({
+const producerCommentSchema = new Schema({
     rating: {
         type: Number,
         min: 1,
@@ -13,6 +13,8 @@ const commentSchema = new Schema({
         required: true
     },
     author: {
+        ///called from token ?
+        // type: mongoose.Schema.Types.ObjectId,
         type: String,
         required: true
     }
@@ -32,9 +34,10 @@ const producerSchema = new Schema({
     },
     image: {
         type: String,
-        required: true
+        required: false
     },
-    comments: [commentSchema]
+    // contact info? phone num, email, external website info //
+    comments: [producerCommentSchema]
 }, {
     timestamps: true
 });
