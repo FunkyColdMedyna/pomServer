@@ -24,4 +24,5 @@ marketRouter.route('/')
     res.end('DELETE operation not supported on /markets ');
 });
 
+
 module.exports = marketRouter;

@@ -1,8 +1,11 @@
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
-var cookieParser = require('cookie-parser');
+// var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+const passport = require('passport');
+const authenticate = require('./authenticate');
+// config
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -10,10 +13,11 @@ const producerRouter = require('./routes/producerRouter');
 const eventRouter = require('./routes/eventRouter');
 const marketRouter = require('./routes/marketRouter');
 const articleRouter = require('./routes/articleRouter');
+const uploadRouter = require('./routes/uploadRouter');
 
 const mongoose = require('mongoose');
 
-const url = 'mongodb://localhost:27017/projectpommeau';
+const url = config.mongoUrl;
 const connect = mongoose.connect(url, {
     useCreateIndex: true,
     useFindAndModify: false,
@@ -27,6 +31,15 @@ connect.then(() => console.log('Connected correctly to the server'),
 
 var app = express();
 
+// app.all('*', (req, res, next) => {
+//   if (req.secure) {
+//     return next();
+//   } else {
+//       console.log(`Redirecting to: https://${req.hostname}:${app.get('secPort')}${req.url}`);
+//       res.redirect(301, `https://${req.hostname}:${app.get('secPort')}${req.url}`)
+//   }
+// });
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -34,15 +47,20 @@ app.set('view engine', 'jade');
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+// app.use(cookieParser());
+
+app.use(passport.initialize()); 
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+
+app.use(express.static(path.join(__dirname, 'public')));
+
 app.use('/producers', producerRouter);
 app.use('/events', eventRouter);
 app.use('/markets', marketRouter);
 app.use('/articles', articleRouter);
+app.use('/imageUpload', uploadRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -1,1 +1,4 @@
 node_modules
+bin/server.cart
+bin/server.key
+config.js
